@@ -2,6 +2,8 @@ class Bullet{
   constructor(x,y,bulletXmove,bulletYmove){
     this.x = x;
     this.y = y;
+    this.width = 3;
+    this.height = 3;
     this.bulletXmove = bulletXmove;
     this.bulletYmove = bulletYmove;
     this.bulletSpeed = 5;
@@ -9,7 +11,7 @@ class Bullet{
 
   drawBullet(){
     ctx.fillStyle = "red"
-    ctx.fillRect(this.x,this.y, 3,3);    
+    ctx.fillRect(this.x,this.y, this.width,this.height);    
   }
 
   updateBulletPosition(){
