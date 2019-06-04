@@ -1,16 +1,17 @@
 class Player{
   constructor(x, y){
-    this.playerXPosition = x;
-    this.playerYPosition = y;    
+    this.x = x;
+    this.y = y;    
     this.radius =  30;
     this.gunAngle;
     this.bulletsShot = [];
-    this.playerSpeed = 3;
+    this.playerSpeed = 3;    
+    this.livesLeft = 10;
   }
 
-  drawPlayer(aimX, aimY, keyPressed,enemy){    
+  drawPlayer(aimX, aimY, keyPressed){      
     ctx.save();
-    ctx.translate(this.playerXPosition, this.playerYPosition);
+    ctx.translate(this.x, this.y);
     ctx.rotate(this.gunAngle);
 
     ctx.fillStyle = 'black';
@@ -26,27 +27,28 @@ class Player{
     this.drawBullets();
     this.movePlayer(keyPressed);
     this.playerAim(aimX,aimY);
+    console.log(this.livesLeft);
   } 
 
   movePlayer(keyPressed){
     //update players coordinates
-    if(keyPressed.moveLeft) this.playerXPosition -= this.playerSpeed;
-    if(keyPressed.moveUp) this.playerYPosition -=  this.playerSpeed;
-    if (keyPressed.moveRight) this.playerXPosition += this.playerSpeed;    
-    if(keyPressed.moveDown) this.playerYPosition += this.playerSpeed;    
+    if(keyPressed.moveLeft) this.x -= this.playerSpeed;
+    if(keyPressed.moveUp) this.y -=  this.playerSpeed;
+    if (keyPressed.moveRight) this.x += this.playerSpeed;    
+    if(keyPressed.moveDown) this.y += this.playerSpeed;    
   }
 
   playerAim(mouseX, mouseY){
-    let catetoAdyacente = mouseX - this.playerXPosition;
-    let catetoOpuesto = mouseY - this.playerYPosition;
+    let catetoAdyacente = mouseX - this.x;
+    let catetoOpuesto = mouseY - this.y;
     this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente);
   }
 
   shoot(){    
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
-    let bullet = new Bullet(this.playerXPosition,this.playerYPosition,bulletXmove,bulletYmove);
-    this.bulletsShot.push(bullet);   
+    let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove);
+    this.bulletsShot.push(bullet);    
   }
 
   drawBullets(){
@@ -55,20 +57,25 @@ class Player{
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);
-      }
-      this.checkCollision(bullet,index);
+      }      
     });  
   }
 
-  checkCollision(bullet,index){
-    let xDistance = enemy.enemyX - bullet.x;
-    let yDistance = enemy.enemyY - bullet.y;
-    let distanceBetween = Math.hypot(xDistance,yDistance);
+  getDistance(x1,y1,x2,y2){
+    let xDistance = x2 -x1;
+    let yDistance = y2 -y1;
+    let hypot = Math.hypot(xDistance,yDistance);  
+    return hypot;
+  }
 
-    if(distanceBetween < bullet.width + enemy.radius ){
-      this.bulletsShot.splice(index,1);   
-      
-    }  
-           
-  } 
+  detectCollision(enemy,index){
+    this.bulletsShot.forEach((bullet,bulletIndex)=>{
+      let distanceBetween = getDistance(enemy.x,enemy.y,bullet.x,bullet.y);
+      if(distanceBetween < enemy.radius + bullet.width){
+        enemysArray.splice(index,1);
+        this.bulletsShot.splice(bulletIndex,1);
+      }
+    })
+  }
+  
 }

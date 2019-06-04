@@ -1,21 +1,20 @@
 class Enemy{
   constructor(x,y){
-    this.enemyX = x;
-    this.enemyY = y;
+    this.x = x;
+    this.y = y;
     this.radius = 30;
     this.gunAngle;
     this.bulletsShot = [];
-    this.bulletDelay = 0;  
-    this.playerX;
-    this.playerY;
-    this.hit = false;  
+    this.bulletDelay = 0;      
+    this.hitPlayer = false;  
+    this.beenHit = false;
   }
 
   
-  drawEnemey(player){   
+  drawEnemy(){   
      
     ctx.save();
-    ctx.translate(this.enemyX, this.enemyY);
+    ctx.translate(this.x, this.y);
     ctx.rotate(this.gunAngle);
 
     ctx.fillStyle = 'red';
@@ -28,31 +27,55 @@ class Enemy{
 
     ctx.restore();
 
-    this.enemyAim(player.playerXPosition,player.playerYPosition)
+    this.enemyAim(player.x,player.y)
     this.drawBullet();
+    this.detectCollision();
 
-    this.bulletDelay === 50 ? this.bulletDelay= 0 : this.bulletDelay++;      
+    this.bulletDelay === 75 ? this.bulletDelay= 0 : this.bulletDelay++;      
     
   }
 
 
 
   enemyAim(playerX, playerY){
-    //calculates the angle that were the player is looking based on the mouse position
-    let catetoAdyacente = playerX - this.enemyX;
-    let catetoOpuesto = playerY - this.enemyY;    
-    this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente);
-    this.playerX = playerX;
-    this.playerY = playerY;
+    //calculates the angle were the player is located based on the mouse position
+    let catetoAdyacente = playerX - this.x;
+    let catetoOpuesto = playerY - this.y;    
+    this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente);    
   }
 
   shoot(bulletDelay){    
     if(bulletDelay === 50){
       let bulletXmove = Math.cos(this.gunAngle);
       let bulletYmove = Math.sin(this.gunAngle);    
-      let bullet = new Bullet(this.enemyX,this.enemyY,bulletXmove,bulletYmove);
+      let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove);
       this.bulletsShot.push(bullet);         
     }
+  }
+
+  getDistance(x1,y1,x2,y2){
+    let xDistance = x2 -x1;
+    let yDistance = y2 -y1;
+    let hypot = Math.hypot(xDistance,yDistance);  
+    return hypot;
+  }
+
+  detectCollision(){
+    this.bulletsShot.forEach((bullet,index)=>{
+      let distanceBetween = getDistance(player.x,player.y,bullet.x,bullet.y);
+      if(distanceBetween < player.radius + bullet.width){
+        this.bulletsShot.splice(index,1);
+        player.livesLeft--;
+      }
+    });
+
+    player.bulletsShot.forEach((bullet,index)=>{
+      let distanceBetween = getDistance(this.x,this.y,bullet.x,bullet.y);
+      if(distanceBetween < this.radius + bullet.width){
+        player.bulletsShot.splice(index,1);
+      }
+    })
+    
   }
 
   drawBullet(){
@@ -62,20 +85,8 @@ class Enemy{
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);
-      }   
-      this.checkCollision(bullet,index);  
+      } 
+      
     })
-  }
-
-  
-
-  checkCollision(bullet,index){
-    let xDistance = this.playerX - bullet.x;
-    let yDistance = this.playerY - bullet.y;
-    let distanceBetween = Math.hypot(xDistance,yDistance);
-
-    if(distanceBetween < bullet.width + player.radius ){
-      this.bulletsShot.splice(index,1);
-    }
-  }
+  }  
 }

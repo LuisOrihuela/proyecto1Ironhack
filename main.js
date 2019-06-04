@@ -4,10 +4,11 @@ let aimX;
 let aimY;
 let player = new Player(50, 50);
 let keypressed = new Keys();
-let enemy = new Enemy(100,150);
-
+let getNewEnemy = true;
 let enemyDelay = 0;
 let enemysArray = [];
+let animate;
+
 
 
 
@@ -28,6 +29,19 @@ document.addEventListener("mousedown", () =>{
   player.shoot();
 });
 
+function getDistance(x1,y1,x2,y2){
+  let xDistance = x2 -x1;
+  let yDistance = y2 -y1;
+  let hypot = Math.hypot(xDistance,yDistance);  
+  return hypot;
+}
+
+function detectCollision(){
+  enemysArray.forEach((enemy,index)=>{
+    player.detectCollision(enemy,index);
+  }) 
+}
+
 function generateRandomCoordinates(){
   let x = Math.floor(Math.random() * canvas.width);
   let y = Math.floor(Math.random() * canvas.height);
@@ -38,34 +52,38 @@ function generateRandomCoordinates(){
 }
 
 function generateEnemy(){
-  if(enemyDelay === 100){    
-    let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
-    enemysArray.push(enemy);
-    enemyDelay = 0;
-  }  
+  if(enemyDelay === 0){        
+      let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
+      enemysArray.push(enemy);
+      //if number of enemies = 5 stop generating more
+      if(enemysArray.length === 5) getNewEnemy = false;             
+  }
+  enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
 }
 
-
+function drawEnemies(){  
+  //Stops generating more enemys if this is false(when enemies = 5)
+  if(getNewEnemy) generateEnemy();  
+  enemysArray.forEach((enemy) => {
+    enemy.drawEnemy();    
+  });
+}
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  player.drawPlayer(aimX,aimY,keypressed,enemy); 
-  enemy.drawEnemey(player);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);  
+  player.drawPlayer(aimX,aimY,keypressed); 
+  detectCollision();  
+  drawEnemies(); 
+  animate = requestAnimationFrame(draw);
+  //Stops animation when the player is out of livess
+  if(player.livesLeft <= 0){
+    cancelAnimationFrame(animate);
+  }
   
-  
-  window.requestAnimationFrame(draw);
 }
-window.requestAnimationFrame(draw);
+
+  
 
 
+draw();
 
-
-// generateEnemy();
-  // for(let i=0; i<enemysArray.length && enemysArray.length <10;i++){
-  //   let currentEnemy = enemysArray[i];
-  //   currentEnemy.drawEnemey();
-  //   currentEnemy.enemyAim();
-  //   console.log(enemysArray)
-  // }
-
-  // enemyDelay === 100 ? enemyDelay = 0 : enemyDelay++; 

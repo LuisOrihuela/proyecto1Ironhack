@@ -7,6 +7,8 @@ class Bullet{
     this.bulletXmove = bulletXmove;
     this.bulletYmove = bulletYmove;
     this.bulletSpeed = 5;
+    this.playerBullets = [];
+    this.enemyBullets = [];
   }
 
   drawBullet(){
@@ -18,4 +20,5 @@ class Bullet{
     this.x += this.bulletXmove * this.bulletSpeed;
     this.y += this.bulletYmove * this.bulletSpeed;
   }
+  
 }
