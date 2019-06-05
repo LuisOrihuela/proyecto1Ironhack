@@ -6,7 +6,7 @@ class Bullet{
     this.height = 3;
     this.bulletXmove = bulletXmove;
     this.bulletYmove = bulletYmove;
-    this.bulletSpeed = 5;
+    this.bulletSpeed = 3;
     this.playerBullets = [];
     this.enemyBullets = [];
   }

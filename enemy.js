@@ -27,11 +27,11 @@ class Enemy{
 
     ctx.restore();
 
-    this.enemyAim(player.x,player.y)
+    this.enemyAim(player.x+player.width/2,player.y+player.height/2)
     this.drawBullet();
     this.detectCollision();
 
-    this.bulletDelay === 75 ? this.bulletDelay= 0 : this.bulletDelay++;      
+    this.bulletDelay === 100 ? this.bulletDelay= 0 : this.bulletDelay++;      
     
   }
 
@@ -45,7 +45,7 @@ class Enemy{
   }
 
   shoot(bulletDelay){    
-    if(bulletDelay === 50){
+    if(bulletDelay === 100){
       let bulletXmove = Math.cos(this.gunAngle);
       let bulletYmove = Math.sin(this.gunAngle);    
       let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove);
@@ -62,7 +62,7 @@ class Enemy{
 
   detectCollision(){
     this.bulletsShot.forEach((bullet,index)=>{
-      let distanceBetween = getDistance(player.x,player.y,bullet.x,bullet.y);
+      let distanceBetween = getDistance(player.x+player.width/2,player.y+player.height/2,bullet.x,bullet.y);
       if(distanceBetween < player.radius + bullet.width){
         this.bulletsShot.splice(index,1);
         player.livesLeft--;

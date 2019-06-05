@@ -2,41 +2,87 @@ class Player{
   constructor(x, y){
     this.x = x;
     this.y = y;    
-    this.radius =  30;
-    this.gunAngle;
+    this.radius = 18;    
     this.bulletsShot = [];
-    this.playerSpeed = 3;    
+    this.playerSpeed = 2;    
     this.livesLeft = 10;
+    this.img = new Image();
+    this.width = 32;
+    this.height = 36;   
+    this.frameCount = 0;
+    this.currentLoopIndex = 0; 
+    this.FRAME_LIMIT = 12;
+    this.CYCLE_LOOP = [0, 1, 0, 2];
+    this.currentDirection = 0;
+    this.currentLoopIndex = 0;
   }
 
-  drawPlayer(aimX, aimY, keyPressed){      
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.gunAngle);
+    loadImage() {
+    this.img.src = 'https://opengameart.org/sites/default/files/Green-Cap-Character-16x18.png';
+    this.img.onload = function() {
+      window.requestAnimationFrame(draw);
+    };
+  }
 
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.arc(0,0,this.radius,Math.PI*2,false);
-    ctx.fill();        
+  
 
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0,-5,40,10);
-
-    ctx.restore();   
-
+  drawPlayer(aimX, aimY, keyPressed){       
+    this.drawFrame(this.CYCLE_LOOP[this.currentLoopIndex],this.currentDirection,this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
     this.playerAim(aimX,aimY);
     console.log(this.livesLeft);
   } 
 
-  movePlayer(keyPressed){
-    //update players coordinates
-    if(keyPressed.moveLeft) this.x -= this.playerSpeed;
-    if(keyPressed.moveUp) this.y -=  this.playerSpeed;
-    if (keyPressed.moveRight) this.x += this.playerSpeed;    
-    if(keyPressed.moveDown) this.y += this.playerSpeed;    
+  drawFrame(frameX,frameY,canvasX,canvasY){
+    let spriteWidth = 16;
+    let spriteHeight = 18;
+    ctx.drawImage(this.img,
+      frameX * spriteWidth, frameY * spriteHeight, spriteWidth, spriteHeight,
+      canvasX, canvasY, this.width, this.height);
+
   }
+
+  movePlayer(keyPressed){
+    const FACING_DOWN = 0;
+    const FACING_UP = 1;
+    const FACING_LEFT = 2;
+    const FACING_RIGHT = 3;    
+    //update players coordinates
+    if(keyPressed.moveLeft){
+      this.x -= this.playerSpeed;
+      this.currentDirection = FACING_LEFT;
+      this.frameIteration(true);
+    } 
+    if(keyPressed.moveUp){
+      this.y -=  this.playerSpeed;
+      this.currentDirection = FACING_UP;
+      this.frameIteration(true);
+    } 
+    if (keyPressed.moveRight){
+      this.x += this.playerSpeed;
+      this.currentDirection = FACING_RIGHT;
+      this.frameIteration(true);
+    }     
+    if(keyPressed.moveDown){
+      this.y += this.playerSpeed;
+      this.currentDirection = FACING_DOWN;
+      this.frameIteration(true);
+    }     
+  }
+
+  frameIteration(hasMoved){
+    if (hasMoved) {
+      this.frameCount++;
+      if (this.frameCount >= this.FRAME_LIMIT) {
+        this.frameCount = 0;
+        this.currentLoopIndex++;
+        if (this.currentLoopIndex >= this.CYCLE_LOOP.length) {
+          this.currentLoopIndex = 0;
+        }
+      }
+  }
+}
 
   playerAim(mouseX, mouseY){
     let catetoAdyacente = mouseX - this.x;
@@ -47,7 +93,7 @@ class Player{
   shoot(){    
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
-    let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove);
+    let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove);
     this.bulletsShot.push(bullet);    
   }
 
@@ -77,5 +123,5 @@ class Player{
       }
     })
   }
-  
+
 }

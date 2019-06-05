@@ -68,7 +68,7 @@ function drawEnemies(){
     enemy.drawEnemy();    
   });
 }
-
+player.loadImage();
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);  
   player.drawPlayer(aimX,aimY,keypressed); 
