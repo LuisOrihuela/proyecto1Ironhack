@@ -8,7 +8,28 @@ let getNewEnemy = true;
 let enemyDelay = 0;
 let enemysArray = [];
 let animate;
+let playerImages = {
+  left: new Image(),
+  right: new Image(),
+  up: new Image(),
+  down: new Image()
+}
+playerImages.left.src = "/assets/3_left.png"
+playerImages.right.src= "assets/3_right.png"
+playerImages.up.src = "assets/3_north.png"
+playerImages.down.src = "assets/3_south.png"
 
+
+
+let enemyImages = {
+  left: new Image(),
+  right: new Image(),
+  up: new Image(),
+  down: new Image()
+}
+
+let img = [playerImages.down, playerImages.up, playerImages.left, playerImages.right];
+let imgEnemy = [enemyImages.down, enemyImages.up, enemyImages.left, enemyImages.right];
 
 
 
@@ -29,12 +50,16 @@ document.addEventListener("mousedown", () =>{
   player.shoot();
 });
 
-function getDistance(x1,y1,x2,y2){
-  let xDistance = x2 -x1;
-  let yDistance = y2 -y1;
-  let hypot = Math.hypot(xDistance,yDistance);  
-  return hypot;
-}
+
+  enemyImages.left.src = 'assets/slime1_sideLeft.png';
+  enemyImages.left.onload = () =>{window.requestAnimationFrame(draw)}; 
+  // enemyImages.right.src = 'assets/slime1_sideRight.png';
+  // enemyImages.right.onload = () =>{};
+  // enemyImages.up.src = 'assets/slime1_back.png';
+  // enemyImages.up.onload = () =>{}; 
+  // enemyImages.down.src = 'assets/slime1_front.png';
+  // enemyImages.down.onload = () =>{}; 
+ 
 
 function detectCollision(){
   enemysArray.forEach((enemy,index)=>{
@@ -53,8 +78,8 @@ function generateRandomCoordinates(){
 
 function generateEnemy(){
   if(enemyDelay === 0){        
-      let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
-      enemysArray.push(enemy);
+      let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate, enemyImages);
+      enemysArray.push(enemy);      
       //if number of enemies = 5 stop generating more
       if(enemysArray.length === 5) getNewEnemy = false;             
   }
@@ -68,7 +93,10 @@ function drawEnemies(){
     enemy.drawEnemy();    
   });
 }
+
+
 player.loadImage();
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);  
   player.drawPlayer(aimX,aimY,keypressed); 
@@ -82,8 +110,5 @@ function draw() {
   
 }
 
-  
-
-
-draw();
+//draw();
 

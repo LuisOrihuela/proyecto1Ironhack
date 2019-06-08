@@ -7,40 +7,29 @@ class Player{
     this.playerSpeed = 2;    
     this.livesLeft = 10;
     this.img = new Image();
-    this.width = 32;
-    this.height = 36;   
+    this.width = 24;
+    this.height = 33;   
     this.frameCount = 0;
     this.currentLoopIndex = 0; 
     this.FRAME_LIMIT = 12;
-    this.CYCLE_LOOP = [0, 1, 0, 2];
+    this.CYCLE_LOOP = [0, 1, 2, 3];
     this.currentDirection = 0;
     this.currentLoopIndex = 0;
-  }
-
-    loadImage() {
-    this.img.src = 'https://opengameart.org/sites/default/files/Green-Cap-Character-16x18.png';
-    this.img.onload = function() {
-      window.requestAnimationFrame(draw);
-    };
-  }
-
-  
+  }  
 
   drawPlayer(aimX, aimY, keyPressed){       
-    this.drawFrame(this.CYCLE_LOOP[this.currentLoopIndex],this.currentDirection,this.x,this.y);
+    this.drawFrame(img[this.currentDirection],this.CYCLE_LOOP[this.currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
-    this.playerAim(aimX,aimY);
-    console.log(this.livesLeft);
+    this.playerAim(aimX,aimY);    
   } 
 
-  drawFrame(frameX,frameY,canvasX,canvasY){
+  drawFrame(img,frameX,canvasX,canvasY){
     let spriteWidth = 16;
-    let spriteHeight = 18;
-    ctx.drawImage(this.img,
-      frameX * spriteWidth, frameY * spriteHeight, spriteWidth, spriteHeight,
+    let spriteHeight = 22;
+    ctx.drawImage(img,
+      frameX * spriteWidth, 0, spriteWidth, spriteHeight,
       canvasX, canvasY, this.width, this.height);
-
   }
 
   movePlayer(keyPressed){
@@ -116,7 +105,7 @@ class Player{
 
   detectCollision(enemy,index){
     this.bulletsShot.forEach((bullet,bulletIndex)=>{
-      let distanceBetween = getDistance(enemy.x,enemy.y,bullet.x,bullet.y);
+      let distanceBetween = this.getDistance(enemy.x,enemy.y,bullet.x,bullet.y);
       if(distanceBetween < enemy.radius + bullet.width){
         enemysArray.splice(index,1);
         this.bulletsShot.splice(bulletIndex,1);
