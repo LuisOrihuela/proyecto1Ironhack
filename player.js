@@ -5,20 +5,14 @@ class Player{
     this.radius = 18;    
     this.bulletsShot = [];
     this.playerSpeed = 2;    
-    this.livesLeft = 10;
-    this.img = new Image();
+    this.livesLeft = 10;    
     this.width = 24;
-    this.height = 33;   
-    this.frameCount = 0;
-    this.currentLoopIndex = 0; 
-    this.FRAME_LIMIT = 12;
-    this.CYCLE_LOOP = [0, 1, 2, 3];
-    this.currentDirection = 0;
-    this.currentLoopIndex = 0;
+    this.height = 33;       
+    this.currentDirection = 0;    
   }  
 
   drawPlayer(aimX, aimY, keyPressed){       
-    this.drawFrame(img[this.currentDirection],this.CYCLE_LOOP[this.currentLoopIndex],this.x,this.y);
+    this.drawFrame(images[this.currentDirection],CYCLE_LOOP[currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
     this.playerAim(aimX,aimY);    
@@ -32,6 +26,8 @@ class Player{
       canvasX, canvasY, this.width, this.height);
   }
 
+  
+
   movePlayer(keyPressed){
     const FACING_DOWN = 0;
     const FACING_UP = 1;
@@ -41,33 +37,34 @@ class Player{
     if(keyPressed.moveLeft){
       this.x -= this.playerSpeed;
       this.currentDirection = FACING_LEFT;
-      this.frameIteration(true);
+      frameIteration(true);
+      console.log(images[this.currentDirection]);
     } 
     if(keyPressed.moveUp){
       this.y -=  this.playerSpeed;
       this.currentDirection = FACING_UP;
-      this.frameIteration(true);
+      frameIteration(true);
     } 
     if (keyPressed.moveRight){
       this.x += this.playerSpeed;
       this.currentDirection = FACING_RIGHT;
-      this.frameIteration(true);
+      frameIteration(true);
     }     
     if(keyPressed.moveDown){
       this.y += this.playerSpeed;
       this.currentDirection = FACING_DOWN;
-      this.frameIteration(true);
+      frameIteration(true);
     }     
   }
 
   frameIteration(hasMoved){
     if (hasMoved) {
-      this.frameCount++;
-      if (this.frameCount >= this.FRAME_LIMIT) {
-        this.frameCount = 0;
-        this.currentLoopIndex++;
-        if (this.currentLoopIndex >= this.CYCLE_LOOP.length) {
-          this.currentLoopIndex = 0;
+      frameCount++;
+      if (frameCount >= FRAME_LIMIT) {
+        frameCount = 0;
+        currentLoopIndex++;
+        if (currentLoopIndex >= CYCLE_LOOP.length) {
+          currentLoopIndex = 0;
         }
       }
   }

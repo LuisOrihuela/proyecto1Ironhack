@@ -1,46 +1,75 @@
 class Enemy{
-  constructor(x,y,enemyImages){
+  constructor(x,y){
     this.x = x;
     this.y = y;
-    this.widht = 32;
+    this.width = 32;
     this.height = 32;
     this.radius = 30;
     this.gunAngle;
     this.bulletsShot = [];
     this.bulletDelay = 0;
+    this.currentDirection = 0;
   }  
 
   drawEnemy(){   
      
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.gunAngle);
+    // ctx.save();
+    // ctx.translate(this.x, this.y);
+    // ctx.rotate(this.gunAngle);
 
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.arc(0,0,this.radius,Math.PI*2,false);
-    ctx.fill();        
+    // ctx.fillStyle = 'red';
+    // ctx.beginPath();
+    // ctx.arc(0,0,this.radius,Math.PI*2,false);
+    // ctx.fill();        
 
-    ctx.fillStyle = 'green';
-    ctx.fillRect(0,-5,40,10);
+    // ctx.fillStyle = 'green';
+    // ctx.fillRect(0,-5,40,10);
 
-    ctx.restore();    
+    // ctx.restore();    
     
-    this.enemyAim(player.x+player.width/2,player.y+player.height/2)
+    this.drawFrame(images[this.currentDirection], CYCLE_LOOP[currentLoopIndex],this.x,this.y);
+    this.changeDirection(player.x+player.width/2,player.y+player.height/2)
     this.drawBullet();
     this.detectCollision();
     this.move();
 
-    this.bulletDelay === 100 ? this.bulletDelay= 0 : this.bulletDelay++;      
-    
+    this.bulletDelay === 100 ? this.bulletDelay= 0 : this.bulletDelay++;          
   }   
 
-  enemyAim(playerX, playerY){
+  drawFrame(img,frameX,canvasX,canvasY){
+    let spriteWidth = 16;
+    let spriteHeight = 16;
+     
+    ctx.drawImage(img,
+      frameX * spriteWidth, 0, spriteWidth, spriteHeight,
+      canvasX, canvasY, this.width, this.height);
+  }
+
+  changeDirection(playerX, playerY){
     //calculates the angle were the player is located based on the mouse position
     let catetoAdyacente = playerX - this.x;
     let catetoOpuesto = playerY - this.y;    
-    this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente);    
-    console.log(this.gunAngle*180/Math.PI);
+    this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente); 
+    let angleDeg = this.gunAngle *180/Math.PI;   
+    //console.log(angleDeg);
+    if(angleDeg > -85 && angleDeg < 85){
+      this.currentDirection = 7;
+      console.log('derecha')
+      console.log(images[this.currentDirection]);
+    }
+    if(angleDeg > 95 || angleDeg < -95){
+      console.log('izquierda')
+      this.currentDirection = 6;    
+    }  
+    if(angleDeg < -85 && angleDeg > -95){
+      console.log('arriba')
+      this.currentDirection = 5;
+    }
+    if(angleDeg > 85 && angleDeg <95){
+      console.log('abajo')
+      this.currentDirection = 4;
+    }
+
   }
 
   move(){
