@@ -33,7 +33,10 @@ var images = new Array()
         'assets/bulletUp.png', 
         'assets/bulletLeft.png',
         'assets/bulletRight.png',     
-        'assets/flamethrower_bullet.png'   
+        'assets/flamethrower_bulletDown.png',
+        'assets/flamethrower_bulletUp.png',
+        'assets/flamethrower_bulletLeft.png',
+        'assets/flamethrower_bulletRight.png'   
       )      
 
 
@@ -105,7 +108,9 @@ function frameIteration(hasMoved){
 
 
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);  
+  ctx.clearRect(0, 0, canvas.width, canvas.height); 
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0,0,canvas.width,canvas.height); 
   player.drawPlayer(aimX,aimY,keypressed); 
   detectCollision();  
   drawEnemies(); 

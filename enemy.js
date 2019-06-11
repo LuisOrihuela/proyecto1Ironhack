@@ -9,6 +9,7 @@ class Enemy{
     this.bulletsShot = [];
     this.bulletDelay = 0;
     this.currentDirection = 0;
+    this.livesLeft = 5;
   }  
 
   drawEnemy(){   
@@ -32,6 +33,7 @@ class Enemy{
     this.drawBullet();
     this.detectCollision();
     this.move();
+    this.drawHealthBar();
 
     this.bulletDelay === 100 ? this.bulletDelay= 0 : this.bulletDelay++;          
   }   
@@ -84,7 +86,7 @@ class Enemy{
     if(bulletDelay === 100){
       let bulletXmove = Math.cos(this.gunAngle);
       let bulletYmove = Math.sin(this.gunAngle);    
-      let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove,12);
+      let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove,this.currentDirection+8);
       this.bulletsShot.push(bullet);         
     }
   }
@@ -124,5 +126,13 @@ class Enemy{
       } 
       
     })
-  }  
+  }
+  
+  drawHealthBar(){ 
+    let x = this.x +1;
+    let y = this.y -10;   
+    ctx.strokeRect(x, y,30,5);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x,y,this.livesLeft * 6,5);
+  }
 }

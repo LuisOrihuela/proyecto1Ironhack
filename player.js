@@ -15,7 +15,8 @@ class Player{
     this.drawFrame(images[this.currentDirection],CYCLE_LOOP[currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
-    this.playerAim(aimX,aimY);    
+    this.playerAim(aimX,aimY);   
+    this.drawHealthBar(); 
   } 
 
   drawFrame(img,frameX,canvasX,canvasY){
@@ -122,10 +123,21 @@ class Player{
     this.bulletsShot.forEach((bullet,bulletIndex)=>{
       let distanceBetween = this.getDistance(enemy.x+enemy.width/2,enemy.y+enemy.height/2,bullet.x,bullet.y);
       if(distanceBetween < enemy.radius + bullet.width){
-        enemysArray.splice(index,1);
+        enemy.livesLeft--;
+        if(enemy.livesLeft <=0){
+          enemysArray.splice(index,1);
+        }    
         this.bulletsShot.splice(bulletIndex,1);
       }
     })
+  }
+
+  drawHealthBar(){ 
+    let x = this.x -3;
+    let y = this.y -10;   
+    ctx.strokeRect(x, y,30,5);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x,y,this.livesLeft * 3,5);
   }
 
 }
