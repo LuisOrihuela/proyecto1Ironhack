@@ -28,7 +28,12 @@ var images = new Array()
         'assets/slime1_front.png',
         'assets/slime1_back.png',     
         'assets/slime1_sideLeft.png',
-        'assets/slime1_sideRight.png', 
+        'assets/slime1_sideRight.png',
+        'assets/bulletDown.png',
+        'assets/bulletUp.png', 
+        'assets/bulletLeft.png',
+        'assets/bulletRight.png',     
+        'assets/flamethrower_bullet.png'   
       )      
 
 
@@ -72,7 +77,7 @@ function generateEnemy(){
       let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
       enemysArray.push(enemy);      
       //if number of enemies = 5 stop generating more
-      if(enemysArray.length === 1) getNewEnemy = false;             
+      if(enemysArray.length === 5) getNewEnemy = false;             
   }
   enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
 }

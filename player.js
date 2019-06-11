@@ -71,15 +71,33 @@ class Player{
 }
 
   playerAim(mouseX, mouseY){
+    const FACING_DOWN = 0;
+    const FACING_UP = 1;
+    const FACING_LEFT = 2;
+    const FACING_RIGHT = 3;   
     let catetoAdyacente = mouseX - this.x;
     let catetoOpuesto = mouseY - this.y;
     this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente);
+    let angleDeg = this.gunAngle *180/Math.PI;
+
+    if(angleDeg > -60 && angleDeg < 60){
+      this.currentDirection = FACING_RIGHT;           
+    }
+    if(angleDeg > 120 || angleDeg < -120){      
+      this.currentDirection = FACING_LEFT;    
+    }  
+    if(angleDeg < -60 && angleDeg > -120){      
+      this.currentDirection = FACING_UP;
+    }
+    if(angleDeg > 60 && angleDeg <120){      
+      this.currentDirection = FACING_DOWN;
+    }
   }
 
   shoot(){    
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
-    let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove);
+    let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove, this.currentDirection+8);
     this.bulletsShot.push(bullet);    
   }
 
@@ -102,7 +120,7 @@ class Player{
 
   detectCollision(enemy,index){
     this.bulletsShot.forEach((bullet,bulletIndex)=>{
-      let distanceBetween = this.getDistance(enemy.x,enemy.y,bullet.x,bullet.y);
+      let distanceBetween = this.getDistance(enemy.x+enemy.width/2,enemy.y+enemy.height/2,bullet.x,bullet.y);
       if(distanceBetween < enemy.radius + bullet.width){
         enemysArray.splice(index,1);
         this.bulletsShot.splice(bulletIndex,1);

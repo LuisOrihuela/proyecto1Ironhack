@@ -4,7 +4,7 @@ class Enemy{
     this.y = y;
     this.width = 32;
     this.height = 32;
-    this.radius = 30;
+    this.radius = 16;
     this.gunAngle;
     this.bulletsShot = [];
     this.bulletDelay = 0;
@@ -50,24 +50,24 @@ class Enemy{
     let catetoAdyacente = playerX - this.x;
     let catetoOpuesto = playerY - this.y;    
     this.gunAngle = Math.atan2(catetoOpuesto,catetoAdyacente); 
-    let angleDeg = this.gunAngle *180/Math.PI;   
+    let angleDeg = this.gunAngle *180/Math.PI;  
+    const FACING_DOWN = 4;
+    const FACING_UP = 5;
+    const FACING_LEFT = 6;
+    const FACING_RIGHT = 7;  
     //console.log(angleDeg);
-    if(angleDeg > -85 && angleDeg < 85){
-      this.currentDirection = 7;
-      console.log('derecha')
+    if(angleDeg > -60 && angleDeg < 60){
+      this.currentDirection = FACING_RIGHT;      
       console.log(images[this.currentDirection]);
     }
-    if(angleDeg > 95 || angleDeg < -95){
-      console.log('izquierda')
-      this.currentDirection = 6;    
+    if(angleDeg > 120 || angleDeg < -120){      
+      this.currentDirection = FACING_LEFT;    
     }  
-    if(angleDeg < -85 && angleDeg > -95){
-      console.log('arriba')
-      this.currentDirection = 5;
+    if(angleDeg < -60 && angleDeg > -120){      
+      this.currentDirection = FACING_UP;
     }
-    if(angleDeg > 85 && angleDeg <95){
-      console.log('abajo')
-      this.currentDirection = 4;
+    if(angleDeg > 60 && angleDeg <120){      
+      this.currentDirection = FACING_DOWN;
     }
 
   }
@@ -84,7 +84,7 @@ class Enemy{
     if(bulletDelay === 100){
       let bulletXmove = Math.cos(this.gunAngle);
       let bulletYmove = Math.sin(this.gunAngle);    
-      let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove);
+      let bullet = new Bullet(this.x,this.y,bulletXmove,bulletYmove,12);
       this.bulletsShot.push(bullet);         
     }
   }
@@ -106,7 +106,7 @@ class Enemy{
     });
 
     player.bulletsShot.forEach((bullet,index)=>{
-      let distanceBetween = this.getDistance(this.x,this.y,bullet.x,bullet.y);
+      let distanceBetween = this.getDistance(this.x+this.width/2,this.y+this.height/2,bullet.x,bullet.y);
       if(distanceBetween < this.radius + bullet.width){
         player.bulletsShot.splice(index,1);
       }
