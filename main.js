@@ -12,6 +12,8 @@ let frameCount = 0;
 let FRAME_LIMIT = 10;
 let CYCLE_LOOP = [0, 1, 2, 3];
 let currentLoopIndex = 0;
+let timer = 0;
+let minutes = 0;
 
 var images = new Array()
 			function preload() {
@@ -76,18 +78,19 @@ function generateRandomCoordinates(){
 }
 
 function generateEnemy(){
-  if(enemyDelay === 0){        
+  enemyDelay++;  
+  if(enemyDelay%250 === 0){     
       let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
-      enemysArray.push(enemy);      
+      enemysArray.push(enemy);          
       //if number of enemies = 5 stop generating more
-      if(enemysArray.length === 5) getNewEnemy = false;             
+      if(enemysArray.length === 10) getNewEnemy = false;  
+      if(enemysArray.length === 0) getNewEnemy = true;           
   }
-  enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
+  // enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
 }
 
-function drawEnemies(){  
-  //Stops generating more enemys if this is false(when enemies = 5)
-  if(getNewEnemy) generateEnemy();  
+function drawEnemies(){    
+  if(getNewEnemy) generateEnemy();   
   enemysArray.forEach((enemy) => {
     enemy.drawEnemy();    
   });
@@ -106,12 +109,29 @@ function frameIteration(hasMoved){
 }
 }
 
+function drawTime(){  
+  timer++;
+  let currentTime;
+  let seconds = Math.floor(timer/60);
+  if(seconds<10) seconds = '0'+seconds;
+  
+  if(seconds === 59){minutes++; timer = 0} 
+  ctx.font = '40px Verdana';
+  if(minutes === 0){
+    ctx.fillText(seconds,canvas.width/2, 50);
+  }else if(minutes > 0){
+    ctx.fillText(minutes+':'+seconds,canvas.width/2, 50);
+  }
+ 
+}
+
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); 
   ctx.fillStyle = 'green';
   ctx.fillRect(0,0,canvas.width,canvas.height); 
   player.drawPlayer(aimX,aimY,keypressed); 
+  drawTime();
   detectCollision();  
   drawEnemies(); 
   animate = requestAnimationFrame(draw);

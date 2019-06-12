@@ -12,10 +12,7 @@ class Bullet{
     this.currentDirection = currentDirection;
   }
 
-  drawBullet(){
-    // ctx.fillStyle = "red"
-    // ctx.fillRect(this.x,this.y, this.width,this.height);    
-    // ctx.drawImage(images[this.currentDirection],this.x,this.y);
+  drawBullet(){    
     this.playerShots();
     this.enemyShots();
   }
@@ -28,8 +25,7 @@ class Bullet{
     let sprtWidth = 13;
     let sprtHeight = 10;    
     let currentIndex = currentLoopIndex;
-    currentIndex > 1 ? currentIndex = 0 : currentIndex; 
-    console.log(currentIndex);
+    currentIndex > 1 ? currentIndex = 0 : currentIndex;     
     ctx.drawImage(images[this.currentDirection],
       CYCLE_LOOP[currentIndex], 0, 13, sprtHeight,
       this.x, this.y, this.width, this.height);

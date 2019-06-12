@@ -60,7 +60,6 @@ class Enemy{
     //console.log(angleDeg);
     if(angleDeg > -60 && angleDeg < 60){
       this.currentDirection = FACING_RIGHT;      
-      console.log(images[this.currentDirection]);
     }
     if(angleDeg > 120 || angleDeg < -120){      
       this.currentDirection = FACING_LEFT;    

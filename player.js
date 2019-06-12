@@ -38,8 +38,7 @@ class Player{
     if(keyPressed.moveLeft){
       this.x -= this.playerSpeed;
       this.currentDirection = FACING_LEFT;
-      frameIteration(true);
-      console.log(images[this.currentDirection]);
+      frameIteration(true);      
     } 
     if(keyPressed.moveUp){
       this.y -=  this.playerSpeed;
