@@ -23,22 +23,22 @@ var images = new Array()
 				}
 			}
 			preload(
-        "assets/3_south.png",
-        "assets/3_north.png",
-        "assets/3_left.png",
-        "assets/3_right.png",   
-        'assets/slime1_front.png',
-        'assets/slime1_back.png',     
-        'assets/slime1_sideLeft.png',
-        'assets/slime1_sideRight.png',
-        'assets/bulletDown.png',
-        'assets/bulletUp.png', 
-        'assets/bulletLeft.png',
-        'assets/bulletRight.png',     
-        'assets/flamethrower_bulletDown.png',
-        'assets/flamethrower_bulletUp.png',
-        'assets/flamethrower_bulletLeft.png',
-        'assets/flamethrower_bulletRight.png'   
+        "/assets/3_south.png",
+        "/assets/3_north.png",
+        "/assets/3_left.png",
+        "/assets/3_right.png",   
+        '/assets/slime1_front.png',
+        '/assets/slime1_back.png',     
+        '/assets/slime1_sideLeft.png',
+        '/assets/slime1_sideRight.png',
+        '/assets/bulletDown.png',
+        '/assets/bulletUp.png', 
+        '/assets/bulletLeft.png',
+        '/assets/bulletRight.png',     
+        '/assets/flamethrower_bulletDown.png',
+        '/assets/flamethrower_bulletUp.png',
+        '/assets/flamethrower_bulletLeft.png',
+        '/assets/flamethrower_bulletRight.png'   
       )      
 
 
