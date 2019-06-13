@@ -8,10 +8,6 @@ let getNewEnemy = true;
 let enemyDelay = 0;
 let enemysArray = [];
 let animate;
-let frameCount = 0;   
-let FRAME_LIMIT = 10;
-let CYCLE_LOOP = [0, 1, 2, 3];
-let currentLoopIndex = 0;
 let timer = 0;
 let minutes = 0;
 let firstAid;
@@ -62,15 +58,6 @@ document.addEventListener("mousedown", () =>{
   player.shoot();
 });
 
-function getPowerUp(){  
-    let spriteWidth = 16;
-    let spriteHeight = 16;
-    ctx.drawImage(images[17], CYCLE_LOOP[currentLoopIndex],0,spriteWidth,spriteHeight,
-    50,50,spriteWidth,spriteHeight);
-  
-}
-  
- 
 
 function detectCollision(){
   enemysArray.forEach((enemy,index)=>{
@@ -105,18 +92,6 @@ function drawEnemies(){
   });
 }
 
-function frameIteration(hasMoved){
-  if (hasMoved) {
-    frameCount++;
-    if (frameCount >= FRAME_LIMIT) {
-      frameCount = 0;
-      currentLoopIndex++;
-      if (currentLoopIndex >= CYCLE_LOOP.length) {
-        currentLoopIndex = 0;
-      }
-    }
-}
-}
 
 function drawTime(){  
   timer++;  
@@ -141,8 +116,7 @@ function draw() {
   player.drawPlayer(aimX,aimY,keypressed); 
   drawTime();
   detectCollision();  
-  drawEnemies();     
-  getPowerUp();
+  drawEnemies();       
   animate = requestAnimationFrame(draw);
   //Stops animation when the player is out of livess
   if(player.livesLeft <= 0){

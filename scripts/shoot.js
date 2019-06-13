@@ -10,11 +10,26 @@ class Bullet{
     this.playerBullets = [];
     this.enemyBullets = [];    
     this.currentDirection = currentDirection;
+    this.currentLoopIndex = 0;
+    this.loop = 0;
+    this.CYCLE_LOOP = [0,1];
   }
 
   drawBullet(){    
     this.playerShots();
     this.enemyShots();
+    this.updateFrame();
+  }
+
+  updateFrame(){
+    this.loop++;
+    if(this.loop >= 10){
+      this.loop = 0;
+      this.currentloopIndex++;
+      if(this.currentloopIndex >= this.CYCLE_LOOP.length){
+        this.currentloopIndex = 0;
+      }
+    }    
   }
   
   playerShots(){
@@ -22,13 +37,13 @@ class Bullet{
   }
 
   enemyShots(){
+    this.updateFrame();
+    
     let sprtWidth = 13;
-    let sprtHeight = 10;    
-    let currentIndex = currentLoopIndex;
-    currentIndex > 1 ? currentIndex = 0 : currentIndex;     
+    let sprtHeight = 13;           
     ctx.drawImage(images[this.currentDirection],
-      CYCLE_LOOP[currentIndex], 0, sprtWidth, sprtHeight,
-      this.x, this.y, this.width, this.height);
+      this.CYCLE_LOOP[this.currentLoopIndex], 0, sprtWidth, sprtHeight,
+      this.x, this.y, sprtWidth, sprtHeight);
   }
 
   updateBulletPosition(){

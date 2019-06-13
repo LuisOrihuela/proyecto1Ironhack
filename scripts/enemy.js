@@ -13,10 +13,11 @@ class Enemy{
     this.livesLeft = lives;
     this.currentloopIndex = 0;
     this.loop = 0;
+    this.CYCLE_LOOP = [0,1,2,3];
   }  
 
   drawEnemy(){  
-    this.drawFrame(images[this.currentDirection], CYCLE_LOOP[this.currentloopIndex],this.x,this.y);
+    this.drawFrame(images[this.currentDirection], this.CYCLE_LOOP[this.currentloopIndex],this.x,this.y);
     this.changeDirection(player.x+player.width/2,player.y+player.height/2)
     this.drawBullet();
     this.detectCollision();
@@ -31,7 +32,7 @@ class Enemy{
     if(this.loop >= 10){
       this.loop = 0;
       this.currentloopIndex++;
-      if(this.currentloopIndex >= CYCLE_LOOP.length){
+      if(this.currentloopIndex >= this.CYCLE_LOOP.length){
         this.currentloopIndex = 0;
       }
     }    
@@ -117,8 +118,8 @@ class Enemy{
 
   drawBullet(){
     this.shoot(this.bulletDelay);
-    this.bulletsShot.forEach((bullet,index)=>{
-      bullet.drawBullet();
+    this.bulletsShot.forEach((bullet,index)=>{      
+      bullet.enemyShots();
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);

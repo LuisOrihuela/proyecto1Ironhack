@@ -10,11 +10,15 @@ class Player{
     this.height = 32;       
     this.currentDirection = 0;    
     this.damage = 1;
+    this.frameCount = 0;
+    this.FRAME_LIMIT = 10;
+    this.currentLoopIndex = 0;
+    this.CYCLE_LOOP = [0,1,2,3];
   }  
 
   drawPlayer(aimX, aimY, keyPressed){  
     
-    this.drawFrame(images[this.currentDirection],CYCLE_LOOP[currentLoopIndex],this.x,this.y);
+    this.drawFrame(images[this.currentDirection],this.CYCLE_LOOP[this.currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
     this.playerAim(aimX,aimY);   
@@ -41,33 +45,33 @@ class Player{
     if(keyPressed.moveLeft){
       this.x -= this.playerSpeed;
       this.currentDirection = FACING_LEFT;
-      frameIteration(true);      
+      this.frameIteration(true);      
     } 
     if(keyPressed.moveUp){
       this.y -=  this.playerSpeed;
       this.currentDirection = FACING_UP;
-      frameIteration(true);
+      this.frameIteration(true);
     } 
     if (keyPressed.moveRight){
       this.x += this.playerSpeed;
       this.currentDirection = FACING_RIGHT;
-      frameIteration(true);
+      this.frameIteration(true);
     }     
     if(keyPressed.moveDown){
       this.y += this.playerSpeed;
       this.currentDirection = FACING_DOWN;
-      frameIteration(true);
+      this.frameIteration(true);
     }     
   }
 
   frameIteration(hasMoved){
     if (hasMoved) {
-      frameCount++;
-      if (frameCount >= FRAME_LIMIT) {
-        frameCount = 0;
-        currentLoopIndex++;
-        if (currentLoopIndex >= CYCLE_LOOP.length) {
-          currentLoopIndex = 0;
+      this.frameCount++;
+      if (this.frameCount >= this.FRAME_LIMIT) {
+        this.frameCount = 0;
+        this.currentLoopIndex++;
+        if (this.currentLoopIndex >= this.CYCLE_LOOP.length) {
+          this.currentLoopIndex = 0;
         }
       }
   }
@@ -105,8 +109,8 @@ class Player{
   }
 
   drawBullets(){
-    this.bulletsShot.forEach((bullet,index)=>{
-      bullet.drawBullet();
+    this.bulletsShot.forEach((bullet,index)=>{      
+      bullet.playerShots();
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);
