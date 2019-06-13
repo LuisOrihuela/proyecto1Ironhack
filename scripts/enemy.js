@@ -1,33 +1,20 @@
 class Enemy{
-  constructor(x,y){
+  constructor(x,y,sizeIncrement,lives){
     this.x = x;
     this.y = y;
-    this.width = 32;
-    this.height = 32;
-    this.radius = 16;
+    this.width = 32 + sizeIncrement;
+    this.height = 32 + sizeIncrement;
+    this.radius = 16 + sizeIncrement/2;
     this.gunAngle;
     this.bulletsShot = [];
     this.bulletDelay = 0;
     this.currentDirection = 0;
-    this.livesLeft = 5;
+    this.lives = lives;
+    this.livesLeft = lives;
   }  
 
   drawEnemy(){   
-     
-    // ctx.save();
-    // ctx.translate(this.x, this.y);
-    // ctx.rotate(this.gunAngle);
-
-    // ctx.fillStyle = 'red';
-    // ctx.beginPath();
-    // ctx.arc(0,0,this.radius,Math.PI*2,false);
-    // ctx.fill();        
-
-    // ctx.fillStyle = 'green';
-    // ctx.fillRect(0,-5,40,10);
-
-    // ctx.restore();    
-    
+        
     this.drawFrame(images[this.currentDirection], CYCLE_LOOP[currentLoopIndex],this.x,this.y);
     this.changeDirection(player.x+player.width/2,player.y+player.height/2)
     this.drawBullet();
@@ -99,16 +86,16 @@ class Enemy{
 
   detectCollision(){
     this.bulletsShot.forEach((bullet,index)=>{
-      let distanceBetween = this.getDistance(player.x+player.width/2,player.y+player.height/2,bullet.x,bullet.y);
-      if(distanceBetween < player.radius + bullet.width){
+      let distanceBetween = this.getDistance(player.x+player.radius,player.y+player.radius,bullet.x+bullet.width,bullet.y+bullet.height);
+      if(distanceBetween < player.radius + bullet.width/2){
         this.bulletsShot.splice(index,1);
         player.livesLeft--;
       }
     });
 
     player.bulletsShot.forEach((bullet,index)=>{
-      let distanceBetween = this.getDistance(this.x+this.width/2,this.y+this.height/2,bullet.x,bullet.y);
-      if(distanceBetween < this.radius + bullet.width){
+      let distanceBetween = this.getDistance(this.x+this.radius,this.y+this.radius,bullet.x+bullet.width,bullet.y+bullet.height);
+      if(distanceBetween < this.radius +bullet.width/2){
         player.bulletsShot.splice(index,1);
       }
     })
@@ -128,9 +115,9 @@ class Enemy{
   }
   
   drawHealthBar(){ 
-    let x = this.x +1;
+    let x = this.x - sizeIncrement;
     let y = this.y -10;   
-    ctx.strokeRect(x, y,30,5);
+    ctx.strokeRect(x, y, this.lives * 6,5);
     ctx.fillStyle = 'red';
     ctx.fillRect(x,y,this.livesLeft * 6,5);
   }

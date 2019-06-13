@@ -38,7 +38,8 @@ var images = new Array()
         '/assets/flamethrower_bulletDown.png',
         '/assets/flamethrower_bulletUp.png',
         '/assets/flamethrower_bulletLeft.png',
-        '/assets/flamethrower_bulletRight.png'   
+        '/assets/flamethrower_bulletRight.png',
+        '/assets/shot_side.png'   
       )      
 
 
@@ -77,20 +78,24 @@ function generateRandomCoordinates(){
   }
 }
 
-function generateEnemy(){
+let sizeIncrement = 0;
+let enemyLives = 5;
+function generateEnemy(){  
   enemyDelay++;  
-  if(enemyDelay%250 === 0){     
-      let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
-      enemysArray.push(enemy);          
+  if(enemyDelay%250 === 0){
+    if(timer % 20 === 0 /*|| timer === 59*/) {enemyLives++; sizeIncrement+=2}     
+    let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate,sizeIncrement,enemyLives);
+    enemysArray.push(enemy);          
       //if number of enemies = 5 stop generating more
-      if(enemysArray.length === 10) getNewEnemy = false;  
-      if(enemysArray.length === 0) getNewEnemy = true;           
+      // if(enemysArray.length === 10) getNewEnemy = false;  
+      // if(enemysArray.length === 0) getNewEnemy = true;           
   }
   // enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
 }
 
 function drawEnemies(){    
-  if(getNewEnemy) generateEnemy();   
+  // if(getNewEnemy) 
+  generateEnemy();   
   enemysArray.forEach((enemy) => {
     enemy.drawEnemy();    
   });
@@ -110,8 +115,7 @@ function frameIteration(hasMoved){
 }
 
 function drawTime(){  
-  timer++;
-  let currentTime;
+  timer++;  
   let seconds = Math.floor(timer/60);
   if(seconds<10) seconds = '0'+seconds;
   

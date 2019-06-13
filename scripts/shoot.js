@@ -2,7 +2,7 @@ class Bullet{
   constructor(x,y,bulletXmove,bulletYmove, currentDirection){
     this.x = x;
     this.y = y;
-    this.width = 13;
+    this.width = 10;
     this.height = 10;
     this.bulletXmove = bulletXmove;
     this.bulletYmove = bulletYmove;
@@ -27,7 +27,7 @@ class Bullet{
     let currentIndex = currentLoopIndex;
     currentIndex > 1 ? currentIndex = 0 : currentIndex;     
     ctx.drawImage(images[this.currentDirection],
-      CYCLE_LOOP[currentIndex], 0, 13, sprtHeight,
+      CYCLE_LOOP[currentIndex], 0, sprtWidth, sprtHeight,
       this.x, this.y, this.width, this.height);
   }
 

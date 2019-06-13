@@ -2,16 +2,18 @@ class Player{
   constructor(x, y){
     this.x = x;
     this.y = y;    
-    this.radius = 18;    
+    this.radius = 14;    
     this.bulletsShot = [];
     this.playerSpeed = 2;    
     this.livesLeft = 10;    
-    this.width = 24;
-    this.height = 33;       
+    this.width = 28;
+    this.height = 32;       
     this.currentDirection = 0;    
+    this.damage = 1;
   }  
 
-  drawPlayer(aimX, aimY, keyPressed){       
+  drawPlayer(aimX, aimY, keyPressed){  
+    
     this.drawFrame(images[this.currentDirection],CYCLE_LOOP[currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
@@ -27,6 +29,7 @@ class Player{
       canvasX, canvasY, this.width, this.height);
   }
 
+  
   
 
   movePlayer(keyPressed){
@@ -112,18 +115,22 @@ class Player{
   }
 
   getDistance(x1,y1,x2,y2){
-    let xDistance = x2 -x1;
-    let yDistance = y2 -y1;
+    let xDistance = x1 -x2;
+    let yDistance = y1 -y2;
     let hypot = Math.hypot(xDistance,yDistance);  
     return hypot;
   }
 
-  detectCollision(enemy,index){
+  causeDamage(enemy){
+    enemy.livesLeft -= this.damage;
+  }
+
+  detectCollision(enemy,index){    
     this.bulletsShot.forEach((bullet,bulletIndex)=>{
-      let distanceBetween = this.getDistance(enemy.x+enemy.width/2,enemy.y+enemy.height/2,bullet.x,bullet.y);
-      if(distanceBetween < enemy.radius + bullet.width){
-        enemy.livesLeft--;
-        if(enemy.livesLeft <=0){
+      let distanceBetween = this.getDistance(enemy.x+enemy.radius,enemy.y+enemy.radius,bullet.x+bullet.width,bullet.y+bullet.height);
+      if(distanceBetween < enemy.radius +bullet.width/2){
+        this.causeDamage(enemy);
+        if(enemy.livesLeft <= 0){
           enemysArray.splice(index,1);
         }    
         this.bulletsShot.splice(bulletIndex,1);
