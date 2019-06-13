@@ -14,6 +14,7 @@ let CYCLE_LOOP = [0, 1, 2, 3];
 let currentLoopIndex = 0;
 let timer = 0;
 let minutes = 0;
+let firstAid;
 
 var images = new Array()
 			function preload() {
@@ -39,7 +40,8 @@ var images = new Array()
         '/assets/flamethrower_bulletUp.png',
         '/assets/flamethrower_bulletLeft.png',
         '/assets/flamethrower_bulletRight.png',
-        '/assets/shot_side.png'   
+        '/assets/shot_side.png',
+        '/assets/powerup.png'   
       )      
 
 
@@ -60,6 +62,13 @@ document.addEventListener("mousedown", () =>{
   player.shoot();
 });
 
+function getPowerUp(){  
+    let spriteWidth = 16;
+    let spriteHeight = 16;
+    ctx.drawImage(images[17], CYCLE_LOOP[currentLoopIndex],0,spriteWidth,spriteHeight,
+    50,50,spriteWidth,spriteHeight);
+  
+}
   
  
 
@@ -85,16 +94,11 @@ function generateEnemy(){
   if(enemyDelay%250 === 0){
     if(timer % 20 === 0 /*|| timer === 59*/) {enemyLives++; sizeIncrement+=2}     
     let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate,sizeIncrement,enemyLives);
-    enemysArray.push(enemy);          
-      //if number of enemies = 5 stop generating more
-      // if(enemysArray.length === 10) getNewEnemy = false;  
-      // if(enemysArray.length === 0) getNewEnemy = true;           
+    enemysArray.push(enemy);                
   }
-  // enemyDelay === 250 ? enemyDelay = 0 : enemyDelay++;   
 }
 
-function drawEnemies(){    
-  // if(getNewEnemy) 
+function drawEnemies(){   
   generateEnemy();   
   enemysArray.forEach((enemy) => {
     enemy.drawEnemy();    
@@ -137,7 +141,8 @@ function draw() {
   player.drawPlayer(aimX,aimY,keypressed); 
   drawTime();
   detectCollision();  
-  drawEnemies(); 
+  drawEnemies();     
+  getPowerUp();
   animate = requestAnimationFrame(draw);
   //Stops animation when the player is out of livess
   if(player.livesLeft <= 0){
