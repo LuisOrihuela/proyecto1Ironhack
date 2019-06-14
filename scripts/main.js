@@ -18,6 +18,12 @@ let rocketLauncher;
 let enemySizeIncrement = 0;
 let enemyLives = 5;
 let damageToPlayer = 1;
+let crystal;
+let timerPistol = new Chronometer();
+let timerShotgun = new Chronometer();
+let timerCyrstal = new Chronometer();
+let timerFirstAid = new Chronometer();
+let timerRocket = new Chronometer();
 
 var images = new Array()
 			function preload() {
@@ -64,7 +70,8 @@ var images = new Array()
         '/assets/rocketDown.png',
         '/assets/rocketUp.png',
         '/assets/rocketLeft.png',
-        '/assets/rocketR.png'
+        '/assets/rocketR.png',
+        '/assets/crystal1.png'
       )      
 
 
@@ -113,44 +120,58 @@ function generateEnemy(){
 
 function generateUpgrade(){
   let time = Math.floor(timer/60); 
-  if(time === 20 && firstAid == undefined && player.livesLeft < 10){
+  if(time === 30 && firstAid == undefined && player.livesLeft < 10){
     firstAid = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);    
   }
-  if(time === 10 && pistol == undefined && player.currentWeapon != 1){
+  if(time === 15 && pistol == undefined && player.currentWeapon != 1){
     pistol = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);    
   }
-  if(time === 30 && shotgun == undefined ){
+  if(time === 45 && shotgun == undefined ){
     shotgun = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  if(time === 8 && rocketLauncher == undefined){
+  if(time === 59 && rocketLauncher == undefined){
     rocketLauncher = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  
+  if(time === 59 && crystal == undefined){
+    crystal = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
+  }  
 }
 
-function eraseUpgrade(){    
-  let time = Math.floor(timer/60);
-  let timeFrame = 5;
-  if((time+timeFrame) % 10 === 0) return true; 
-}
+function eraseUpgrade(timer){ 
+  timer.startTicking();    
+  if(timer.getSeconds() == 10){    
+    timer.timerReset();
+    return true;
+  }
 
-function drawUpgrade(){  
-  generateUpgrade();  
+}
+function drawUpgrade(){     
+  generateUpgrade();   
   if(firstAid != undefined) {
-    firstAid.drawFirstAid(); 
-    if(eraseUpgrade()) firstAid = undefined;
+    firstAid.drawFirstAid();    
+    if(eraseUpgrade(timerFirstAid)){
+      firstAid = undefined;
+    }
   } 
   if(pistol != undefined){
-    pistol.drawPistol();
-    if(eraseUpgrade()) pistol = undefined;
+    pistol.drawPistol();    
+    if(eraseUpgrade(timerPistol)) pistol = undefined;
   } 
   if(shotgun != undefined){
-    shotgun.drawShotgun();
-    if(eraseUpgrade()) shotgun = undefined;
+    shotgun.drawShotgun();    
+    if(eraseUpgrade(timerShotgun)) shotgun = undefined;
   }
-  if(rocketLauncher != undefined){
+  if(rocketLauncher != undefined){    
     rocketLauncher.drawRocketLauncher();
-    if(eraseUpgrade()) rocketLauncher = undefined;
+    if(eraseUpgrade(timerRocket)){
+      rocketLauncher = undefined;      
+    } 
+  }
+  if(crystal != undefined){    
+    crystal.drawCrystal();
+    if(eraseUpgrade(timerCyrstal)){
+      crystal = undefined;         
+    } 
   }
 }
 
@@ -175,8 +196,57 @@ function drawTime(){
     ctx.strokeText(seconds,canvas.width/2, 50);
   }else if(minutes > 0){
     ctx.fillText(minutes+':'+seconds,canvas.width/2, 50);    
+  } 
+}
+
+function drawAmmo(){
+  let width;
+  let height;  
+  let image;
+  let multiplier;
+  let weapon;
+  if(player.currentWeapon === 0){
+    weapon = 'tomatoe';
+    image = images[18];
+    width = 22;
+    height = 22; 
+    multiplier = 1.5;   
+  } 
+  if(player.currentWeapon === 1){
+    weapon = 'pistol';
+    image = images[21];
+    width = 10;
+    height = 6;
+    multiplier = 1.6;
+  } 
+  if(player.currentWeapon === 2){
+    weapon = 'shotgun';
+    image = images[26];
+    width = 18;
+    height = 9;
+    multiplier = 1.2;
+  } 
+  if(player.currentWeapon === 3){
+    weapon = 'rocket launcher';
+    image = images[31];
+    width = 19;
+    height = 10;
+    multiplier = 1;
+  } 
+  ctx. fillStyle = 'black'
+  ctx.font = '10px Verdana'; 
+  if(weapon === 'tomatoe'){
+    ctx.drawImage(image,
+      0, 0, width, height,
+      5, 2, width*multiplier, height*multiplier);     
+  }else if(weapon === 'pistol'){
+    ctx.drawImage(image,18,12, width * multiplier, height*multiplier);
   }
- 
+  else{
+    ctx.drawImage(image,15,12);
+  }  
+  ctx.fillText(weapon +':   '+player.ammo,40,20);
+  
 }
 
 
@@ -185,6 +255,7 @@ function draw() {
   ctx.fillStyle = 'green';
   ctx.fillRect(0,0,canvas.width,canvas.height); 
   player.drawPlayer(aimX,aimY,keypressed); 
+  drawAmmo();
   drawTime();
   detectCollision();  
   drawEnemies();       

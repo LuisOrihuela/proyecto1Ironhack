@@ -38,6 +38,7 @@ class Upgrade{
       this.x, this.y,pistolWidth*increaseSize,pistolHeight*increaseSize);
     if(this.detectCollision(pistolRadius)){
       player.currentWeapon = 1;
+      player.ammo = 100;
       pistol = undefined;   
     }
   }
@@ -52,6 +53,7 @@ class Upgrade{
       this.x, this.y,shotgunWidth*increaseSize,shotgunHeight*increaseSize);
       if(this.detectCollision(shotgunRadius)){
         player.currentWeapon = 2;
+        player.ammo = 50;
         shotgun = undefined;   
       }
   }
@@ -65,9 +67,25 @@ class Upgrade{
       this.x, this.y,rocketWidth*increaseSize,rocketHeight*increaseSize);
       if(this.detectCollision(rocketRadius)){
         player.currentWeapon = 3;
+        player.ammo = 40;
         rocketLauncher = undefined;   
       }
     this.updateFrame();
+  }
+
+  drawCrystal(){
+    let crystalWidth = 10;
+    let crystalHeight = 24;
+    let crystalRadius = 7;  
+    let imageIndex = 38;  
+    ctx.drawImage(images[imageIndex],
+      this.CYCLE_LOOP[this.currentloopIndex]*crystalWidth, 0, crystalWidth, crystalHeight,
+      this.x, this.y, crystalWidth, crystalHeight);
+      if(this.detectCollision(crystalRadius)){        
+        player.playerSpeed = 4;
+        crystal = undefined;
+      }
+      this.updateFrame();
   }
 
   updateFrame(){

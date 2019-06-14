@@ -15,6 +15,7 @@ class Enemy{
     this.loop = 0;
     this.CYCLE_LOOP = [0,1,2,3];
     this.damage = damage;
+    this.collisionPlayer = true;
   }  
 
   drawEnemy(){  
@@ -103,9 +104,9 @@ class Enemy{
     this.bulletsShot.forEach((bullet,index)=>{
       let distanceBetween = this.getDistance(player.x+player.radius,player.y+player.radius,bullet.x+bullet.width,bullet.y+bullet.height);
       if(distanceBetween < player.radius + bullet.width/2){
-        this.bulletsShot.splice(index,1);
-        player.livesLeft-=this.damage;
-      }
+        this.bulletsShot.splice(index,1);        
+        if(this.collisionPlayer) player.livesLeft-=this.damage;        
+      }      
     });
 
     player.bulletsShot.forEach((bullet,index)=>{
@@ -124,8 +125,7 @@ class Enemy{
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);
-      } 
-      
+      }       
     })
   }
   
@@ -133,11 +133,12 @@ class Enemy{
     let x = this.x - enemySizeIncrement;
     let y = this.y -10;  
     let color;
+    let currentHealth = this.livesLeft/this.lives;
     ctx.strokeStyle='black'; 
     ctx.strokeRect(x, y, this.lives * 6,5);    
-    if(this.livesLeft / this.lives === 1 ) color = 'blue';
-    if(this.livesLeft / this.lives <= 0.7 ) color = 'yellow';
-    if(this.livesLeft / this.lives <= 0.3 ) color = 'red';
+    if(currentHealth <= 1 && currentHealth > 0.7) color = 'blue';
+    if(currentHealth <= 0.7 && currentHealth > 0.3 ) color = 'yellow';
+    if(currentHealth <= 0.3) color = 'red';
     ctx.fillStyle = color;
     ctx.fillRect(x,y,this.livesLeft * 6,5);
   }

@@ -4,7 +4,7 @@ class Player{
     this.y = y;    
     this.radius = 14;    
     this.bulletsShot = [];
-    this.playerSpeed = 2;    
+    this.playerSpeed = 1.5;    
     this.livesLeft = 10;    
     this.width = 28;
     this.height = 32;       
@@ -15,10 +15,12 @@ class Player{
     this.currentLoopIndex = 0;
     this.CYCLE_LOOP = [0,1,2,3];
     this.currentWeapon = 0;
+    this.speedTimer = 0;    
+    this.ammo = 0;
   }  
 
   drawPlayer(aimX, aimY, keyPressed){  
-    
+    if(this.playerSpeed===4) this.speedUpgrade();
     this.drawFrame(images[this.currentDirection],this.CYCLE_LOOP[this.currentLoopIndex],this.x,this.y);
     this.drawBullets();
     this.movePlayer(keyPressed);
@@ -34,8 +36,11 @@ class Player{
       canvasX, canvasY, this.width, this.height);
   }
 
-  
-  
+  speedUpgrade(){       
+    this.speedTimer++;
+    let seconds = this.speedTimer/60;
+    if(seconds === 10) this.playerSpeed = 1.5;    
+  }  
 
   movePlayer(keyPressed){
     const FACING_DOWN = 0;
@@ -70,10 +75,10 @@ class Player{
       this.frameCount++;
       if (this.frameCount >= this.FRAME_LIMIT) {
         this.frameCount = 0;
-        this.currentLoopIndex++;
+        this.currentLoopIndex++;        
         if (this.currentLoopIndex >= this.CYCLE_LOOP.length) {
           this.currentLoopIndex = 0;
-        }
+        }        
       }
   }
 }
@@ -103,10 +108,20 @@ class Player{
   }
 
   shoot(){    
+    
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
     let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove, this.currentDirection, this.currentWeapon);
-    this.bulletsShot.push(bullet);    
+    this.bulletsShot.push(bullet);      
+    if(this.ammo === 0){
+      this.currentWeapon = 0;
+      this.ammo = 0;
+    }else{
+      this.ammo--;
+    }        
+    
+    
+    console.log(this.ammo);
   }
 
   drawBullets(){
