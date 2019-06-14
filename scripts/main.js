@@ -10,7 +10,12 @@ let enemysArray = [];
 let animate;
 let timer = 0;
 let minutes = 0;
+let Upgrades = [];
 let firstAid;
+let pistol;
+let enemySizeIncrement = 0;
+let enemyLives = 5;
+let damageToPlayer = 1;
 
 var images = new Array()
 			function preload() {
@@ -37,7 +42,15 @@ var images = new Array()
         '/assets/flamethrower_bulletLeft.png',
         '/assets/flamethrower_bulletRight.png',
         '/assets/shot_side.png',
-        '/assets/powerup.png'   
+        '/assets/powerup.png',
+        '/assets/bulleta.png',
+        '/assets/bullet_tomato.png',
+        '/assets/p_down.png',
+        '/assets/p_diagdown.png',
+        '/assets/p_side.png',
+        '/assets/p_diagup.png',
+        '/assets/p_up.png',
+
       )      
 
 
@@ -74,15 +87,30 @@ function generateRandomCoordinates(){
   }
 }
 
-let sizeIncrement = 0;
-let enemyLives = 5;
+
 function generateEnemy(){  
   enemyDelay++;  
   if(enemyDelay%250 === 0){
-    if(timer % 20 === 0 /*|| timer === 59*/) {enemyLives++; sizeIncrement+=2}     
-    let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate,sizeIncrement,enemyLives);
+    if(timer % 20 === 0 /*|| timer === 59*/) {enemyLives++; enemySizeIncrement+=2; damageToPlayer++}     
+    let enemy = new Enemy(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate,enemySizeIncrement,enemyLives,damageToPlayer);
     enemysArray.push(enemy);                
   }
+}
+
+function generateUpgrade(){
+  let time = Math.floor(timer/60); 
+  if(time % 10 === 0 && firstAid == undefined && player.livesLeft < 10){
+    firstAid = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);    
+  }
+  if(time === 5 && pistol == undefined/*&& player.currentWeapon === 0*/){
+    pistol = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);    
+    console.log('new pistol')  }
+}
+
+function drawUpgrade(){
+  generateUpgrade();
+  if(firstAid != undefined) firstAid.drawFirstAid();  
+  if(pistol != undefined) pistol.drawPistol();
 }
 
 function drawEnemies(){   
@@ -117,6 +145,7 @@ function draw() {
   drawTime();
   detectCollision();  
   drawEnemies();       
+  drawUpgrade();
   animate = requestAnimationFrame(draw);
   //Stops animation when the player is out of livess
   if(player.livesLeft <= 0){

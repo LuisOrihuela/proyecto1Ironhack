@@ -1,5 +1,5 @@
 class Bullet{
-  constructor(x,y,bulletXmove,bulletYmove, currentDirection){
+  constructor(x,y,bulletXmove,bulletYmove, currentDirection, currentWeapon){
     this.x = x;
     this.y = y;
     this.width = 10;
@@ -10,39 +10,50 @@ class Bullet{
     this.playerBullets = [];
     this.enemyBullets = [];    
     this.currentDirection = currentDirection;
-    this.currentLoopIndex = 0;
-    this.loop = 0;
-    this.CYCLE_LOOP = [0,1];
-  }
-
-  drawBullet(){    
-    this.playerShots();
-    this.enemyShots();
-    this.updateFrame();
-  }
-
-  updateFrame(){
-    this.loop++;
-    if(this.loop >= 10){
-      this.loop = 0;
-      this.currentloopIndex++;
-      if(this.currentloopIndex >= this.CYCLE_LOOP.length){
-        this.currentloopIndex = 0;
-      }
-    }    
+    this.weapon = currentWeapon;    
   }
   
-  playerShots(){
-    ctx.drawImage(images[this.currentDirection],this.x,this.y);
+  draw(){
+    if(this.weapon === 0){
+      this.tomatoeShot();
+    }
+    else if(this.weapon === 1){
+      this.pistolShot();
+    }
+    else if(this.weapon === 2){
+      this.shutgunShot();
+    }
+
   }
 
-  enemyShots(){
-    this.updateFrame();
+  tomatoeShot(){
+    player.damage = 0.5;
+    let imageIndex = 19;
+    let sprtWidth = 22;
+    let sprtHeight = 22;
+    ctx.drawImage(images[imageIndex],
+      0, 0, sprtWidth, sprtHeight,
+      this.x, this.y, sprtWidth, sprtHeight);
+  }
+
+  shutgunShot(){    
+    player.damage = 2;
+    let imageIndex = this.currentDirection + 8;    
+    ctx.drawImage(images[imageIndex],this.x,this.y);
     
+  }
+  
+  pistolShot(){
+    player.damage = 1;
+    let imageIndex = 18;
+    ctx.drawImage(images[imageIndex],this.x,this.y);
+  }
+
+  enemyShots(){     
     let sprtWidth = 13;
     let sprtHeight = 13;           
     ctx.drawImage(images[this.currentDirection],
-      this.CYCLE_LOOP[this.currentLoopIndex], 0, sprtWidth, sprtHeight,
+      0, 0, sprtWidth, sprtHeight,
       this.x, this.y, sprtWidth, sprtHeight);
   }
 

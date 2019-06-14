@@ -1,5 +1,5 @@
 class Enemy{
-  constructor(x,y,sizeIncrement,lives){
+  constructor(x,y,sizeIncrement,lives, damage){
     this.x = x;
     this.y = y;
     this.width = 32 + sizeIncrement;
@@ -14,6 +14,7 @@ class Enemy{
     this.currentloopIndex = 0;
     this.loop = 0;
     this.CYCLE_LOOP = [0,1,2,3];
+    this.damage = damage;
   }  
 
   drawEnemy(){  
@@ -103,7 +104,7 @@ class Enemy{
       let distanceBetween = this.getDistance(player.x+player.radius,player.y+player.radius,bullet.x+bullet.width,bullet.y+bullet.height);
       if(distanceBetween < player.radius + bullet.width/2){
         this.bulletsShot.splice(index,1);
-        player.livesLeft--;
+        player.livesLeft-=this.damage;
       }
     });
 
@@ -129,7 +130,7 @@ class Enemy{
   }
   
   drawHealthBar(){ 
-    let x = this.x - sizeIncrement;
+    let x = this.x - enemySizeIncrement;
     let y = this.y -10;   
     ctx.strokeRect(x, y, this.lives * 6,5);
     ctx.fillStyle = 'red';

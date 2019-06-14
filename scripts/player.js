@@ -14,6 +14,7 @@ class Player{
     this.FRAME_LIMIT = 10;
     this.currentLoopIndex = 0;
     this.CYCLE_LOOP = [0,1,2,3];
+    this.currentWeapon = 0;
   }  
 
   drawPlayer(aimX, aimY, keyPressed){  
@@ -104,13 +105,13 @@ class Player{
   shoot(){    
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
-    let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove, this.currentDirection+8);
+    let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove, this.currentDirection, this.currentWeapon);
     this.bulletsShot.push(bullet);    
   }
 
   drawBullets(){
     this.bulletsShot.forEach((bullet,index)=>{      
-      bullet.playerShots();
+      bullet.draw();
       bullet.updateBulletPosition();
       if(bullet.x > canvas.width || bullet.x < 0 || bullet.y >canvas.height || bullet.y < 0){      
         this.bulletsShot.splice(index,1);
