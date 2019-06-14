@@ -23,12 +23,15 @@ class Bullet{
     else if(this.weapon === 2){
       this.shutgunShot();
     }
+    else if(this.weapon === 3){
+      this.rocketShot();
+    }
 
   }
 
   tomatoeShot(){
     player.damage = 0.5;
-    let imageIndex = 19;
+    let imageIndex = 18;
     let sprtWidth = 22;
     let sprtHeight = 22;
     ctx.drawImage(images[imageIndex],
@@ -39,13 +42,18 @@ class Bullet{
   shutgunShot(){    
     player.damage = 2;
     let imageIndex = this.currentDirection + 8;    
-    ctx.drawImage(images[imageIndex],this.x,this.y);
-    
+    ctx.drawImage(images[imageIndex],this.x,this.y);    
   }
   
   pistolShot(){
     player.damage = 1;
-    let imageIndex = 18;
+    let imageIndex = 17;
+    ctx.drawImage(images[imageIndex],this.x,this.y);
+  }
+
+  rocketShot(){
+    player.damage = 3;    
+    let imageIndex = this.currentDirection + 34;    
     ctx.drawImage(images[imageIndex],this.x,this.y);
   }
 

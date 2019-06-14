@@ -131,9 +131,14 @@ class Enemy{
   
   drawHealthBar(){ 
     let x = this.x - enemySizeIncrement;
-    let y = this.y -10;   
-    ctx.strokeRect(x, y, this.lives * 6,5);
-    ctx.fillStyle = 'red';
+    let y = this.y -10;  
+    let color;
+    ctx.strokeStyle='black'; 
+    ctx.strokeRect(x, y, this.lives * 6,5);    
+    if(this.livesLeft / this.lives === 1 ) color = 'blue';
+    if(this.livesLeft / this.lives <= 0.7 ) color = 'yellow';
+    if(this.livesLeft / this.lives <= 0.3 ) color = 'red';
+    ctx.fillStyle = color;
     ctx.fillRect(x,y,this.livesLeft * 6,5);
   }
 }

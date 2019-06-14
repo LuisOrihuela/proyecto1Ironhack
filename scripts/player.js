@@ -146,8 +146,11 @@ class Player{
   drawHealthBar(){ 
     let x = this.x -3;
     let y = this.y -10;   
+    ctx.strokeStyle='black'; 
     ctx.strokeRect(x, y,30,5);
-    ctx.fillStyle = 'red';
+    if(this.livesLeft >=8) ctx.fillStyle = 'blue';
+    else if(this.livesLeft < 8 && this.livesLeft > 3) ctx.fillStyle = 'yellow';
+    else if(this.livesLeft <= 3) ctx.fillStyle = 'red';
     ctx.fillRect(x,y,this.livesLeft * 3,5);
   }
 
