@@ -17,7 +17,7 @@ class Player{
     this.currentWeapon = 0;
     this.speedTimer = 0;    
     this.ammo = 0;
-  }  
+  }    
 
   drawPlayer(aimX, aimY, keyPressed){  
     if(this.playerSpeed===4) this.speedUpgrade();
