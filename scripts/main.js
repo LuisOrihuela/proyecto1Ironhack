@@ -45,7 +45,7 @@ var images = new Array()
         "assets/slime1_sideLeft.png",
         "assets/slime1_sideRight.png",
         "assets/bulletDown.png",
-        "ssets/bulletUp.png", 
+        "assets/bulletUp.png", 
         "assets/bulletLeft.png",
         "assets/bulletRight.png",     
         "assets/flamethrower_bulletDown.png",
@@ -239,7 +239,7 @@ function drawAmmo(){
     height = 10;
     multiplier = 1;
   } 
-  ctx. fillStyle = 'black'
+  ctx. fillStyle = 'black';
   ctx.font = '10px Verdana'; 
   if(weapon === 'tomatoe'){
     ctx.drawImage(image,
@@ -251,8 +251,7 @@ function drawAmmo(){
   else{
     ctx.drawImage(image,15,12);
   }  
-  ctx.fillText(weapon +':   '+player.ammo,40,20);
-  
+  ctx.fillText(weapon +':   '+player.ammo,40,20);  
 }
 
 
