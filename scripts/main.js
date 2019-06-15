@@ -105,6 +105,12 @@ document.addEventListener("mousedown", () =>{
   player.shoot(); 
 });
 
+function getCanvasBoundaries(){
+  if(player.x > canvas.width-player.width)player.x-=2;
+  if(player.x < 0) player.x+=2;
+  if(player.y >= canvas.height-player.height) player.y-=2;
+  if(player.y < 1) player.y+=2;
+}
 
 function detectCollision(){
   enemysArray.forEach((enemy,index)=>{
@@ -270,6 +276,7 @@ function draw() {
   player.drawPlayer(aimX,aimY,keypressed); 
   backmusic.play();
   backmusic.loop;
+  getCanvasBoundaries();
   drawAmmo();
   drawTime();
   detectCollision();  

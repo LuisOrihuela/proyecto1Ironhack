@@ -163,7 +163,7 @@ class Player{
   }
 
   drawHealthBar(){ 
-    let x = this.x -3;
+    let x = this.x;
     let y = this.y -10;   
     ctx.strokeStyle='black'; 
     ctx.strokeRect(x, y,30,5);
