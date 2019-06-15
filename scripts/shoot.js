@@ -43,7 +43,7 @@ class Bullet{
     player.damage = 2;
     let imageIndex = this.currentDirection + 8;    
     ctx.drawImage(images[imageIndex],this.x,this.y);   
-    shotgunSound.play(); 
+    // shotgunSound.play(); 
   }
   
   pistolShot(){
@@ -51,7 +51,7 @@ class Bullet{
     let imageIndex = 17;
     ctx.drawImage(images[imageIndex],this.x,this.y);
     // pistolSound.load();   
-    pistolSound.play();
+    // pistolSound.play();
 
   }
 
@@ -59,7 +59,7 @@ class Bullet{
     player.damage = 3;    
     let imageIndex = this.currentDirection + 34;    
     ctx.drawImage(images[imageIndex],this.x,this.y);
-    rocketSound.play();
+    // rocketSound.play();
   }
 
   enemyShots(){     

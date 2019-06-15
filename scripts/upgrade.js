@@ -19,7 +19,7 @@ class Upgrade{
     let increaseSize = 1.5;
     let imageIndex = 16;
     this.updateFrame();
-    if(this.detectCollision(firstAidradius)){
+    if(this.detectCollision(firstAidradius,firstAidSound)){
       this.increasePlayerLife(true);
       firstAid = undefined;
     }    
@@ -36,7 +36,7 @@ class Upgrade{
     this.updateFrame();
     ctx.drawImage(images[this.pistolImageIndex],0,0,pistolWidth,pistolHeight,
       this.x, this.y,pistolWidth*increaseSize,pistolHeight*increaseSize);
-    if(this.detectCollision(pistolRadius)){
+    if(this.detectCollision(pistolRadius,weaponSound)){
       player.currentWeapon = 1;
       player.ammo = 100;
       pistol = undefined;   
@@ -51,7 +51,7 @@ class Upgrade{
     this.updateFrame();
     ctx.drawImage(images[this.shotgunImageIndex],0,0,shotgunWidth,shotgunHeight,
       this.x, this.y,shotgunWidth*increaseSize,shotgunHeight*increaseSize);
-      if(this.detectCollision(shotgunRadius)){
+      if(this.detectCollision(shotgunRadius,weaponSound)){
         player.currentWeapon = 2;
         player.ammo = 50;
         shotgun = undefined;   
@@ -65,7 +65,7 @@ class Upgrade{
     let rocketRadius = 9;
     ctx.drawImage(images[this.rocketImageIndex],0,0,rocketWidth,rocketHeight,
       this.x, this.y,rocketWidth*increaseSize,rocketHeight*increaseSize);
-      if(this.detectCollision(rocketRadius)){
+      if(this.detectCollision(rocketRadius,weaponSound)){
         player.currentWeapon = 3;
         player.ammo = 40;
         rocketLauncher = undefined;   
@@ -81,7 +81,7 @@ class Upgrade{
     ctx.drawImage(images[imageIndex],
       this.CYCLE_LOOP[this.currentloopIndex]*crystalWidth, 0, crystalWidth, crystalHeight,
       this.x, this.y, crystalWidth, crystalHeight);
-      if(this.detectCollision(crystalRadius)){        
+      if(this.detectCollision(crystalRadius,crystalSound)){        
         player.playerSpeed = 4;
         crystal = undefined;
       }
@@ -125,9 +125,10 @@ class Upgrade{
     }
   }
 
-  detectCollision(radius){    
+  detectCollision(radius,sound){    
     let distance = this.getDistance(player.x+player.radius, player.y + player.radius, this.x + radius, this.y + radius);
-    if(distance < player.radius + radius){      
+    if(distance < player.radius + radius){         
+      sound.play();  
       return true;
     }
   }

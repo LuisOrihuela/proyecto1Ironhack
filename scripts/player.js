@@ -107,12 +107,19 @@ class Player{
     }
   }
 
-  shoot(){    
-    
+  shoot(){        
     let bulletXmove = Math.cos(this.gunAngle);
     let bulletYmove = Math.sin(this.gunAngle);    
     let bullet = new Bullet(this.x+this.width/2,this.y+this.height/2,bulletXmove,bulletYmove, this.currentDirection, this.currentWeapon);
-    this.bulletsShot.push(bullet);      
+    this.bulletsShot.push(bullet);  
+    //pistol  
+    if(this.currentWeapon ===1) pistolSound.play();
+    //tomato
+    if(this.currentWeapon === 0) tomatoSound.play();
+    //shotgun
+    if(this.currentWeapon ===2) shotgunSound.play();   
+    //rocket
+    if(this.currentWeapon ===3) rocketSound.play();
     if(this.ammo === 0){
       this.currentWeapon = 0;
       this.ammo = 0;

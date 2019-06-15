@@ -27,6 +27,11 @@ let timerRocket = new Chronometer();
 let pistolSound = document.getElementById('pistol');
 let rocketSound = document.getElementById('rocket');
 let shotgunSound = document.getElementById('shotgun');
+let weaponSound = document.getElementById('weaponPickup');
+let backmusic = document.getElementById('background');
+let tomatoSound = document.getElementById('tomatoSound');
+let crystalSound = document.getElementById('crystalSound');
+let firstAidSound = document.getElementById('firstAidSound');
 
 var images = new Array()
 			function preload() {
@@ -54,7 +59,7 @@ var images = new Array()
         "assets/flamethrower_bulletRight.png",        
         "assets/powerup.png",
         "assets/bulleta.png",
-        "assets/bullet_tomato.png",
+        "assets/bullet_tomato.png", 
         "assets/p_down.png",
         "assets/p_diagdown.png",
         "assets/p_side.png",
@@ -92,10 +97,11 @@ document.addEventListener("mousemove", event =>{
 });
 
 document.addEventListener("mousedown", () =>{  
-  player.shoot();
+  tomatoSound.load();
   pistolSound.load();  
   rocketSound.load();
   shotgunSound.load();
+  player.shoot(); 
 });
 
 
@@ -135,10 +141,10 @@ function generateUpgrade(){
   if(time === 45 && shotgun == undefined ){
     shotgun = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  if(time === 59 && rocketLauncher == undefined){
+  if(time === 5 && rocketLauncher == undefined){
     rocketLauncher = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  if(time === 59 && crystal == undefined){
+  if(time === 5 && crystal == undefined){
     crystal = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
   }  
 }
@@ -260,6 +266,8 @@ function draw() {
   ctx.fillStyle = 'green';
   ctx.fillRect(0,0,canvas.width,canvas.height); 
   player.drawPlayer(aimX,aimY,keypressed); 
+  backmusic.play();
+  backmusic.loop;
   drawAmmo();
   drawTime();
   detectCollision();  
