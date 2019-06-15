@@ -25,6 +25,8 @@ let timerCyrstal = new Chronometer();
 let timerFirstAid = new Chronometer();
 let timerRocket = new Chronometer();
 let pistolSound = document.getElementById('pistol');
+let rocketSound = document.getElementById('rocket');
+let shotgunSound = document.getElementById('shotgun');
 
 var images = new Array()
 			function preload() {
@@ -91,8 +93,9 @@ document.addEventListener("mousemove", event =>{
 
 document.addEventListener("mousedown", () =>{  
   player.shoot();
-  pistolSound.load();
-  pistolSound.play();
+  pistolSound.load();  
+  rocketSound.load();
+  shotgunSound.load();
 });
 
 
