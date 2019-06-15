@@ -24,6 +24,7 @@ let timerShotgun = new Chronometer();
 let timerCyrstal = new Chronometer();
 let timerFirstAid = new Chronometer();
 let timerRocket = new Chronometer();
+let pistolSound = document.getElementById('pistol');
 
 var images = new Array()
 			function preload() {
@@ -90,6 +91,8 @@ document.addEventListener("mousemove", event =>{
 
 document.addEventListener("mousedown", () =>{  
   player.shoot();
+  pistolSound.load();
+  pistolSound.play();
 });
 
 
@@ -192,10 +195,10 @@ function drawTime(){
   if(seconds<10) seconds = '0'+seconds;  
   if(seconds === 59){minutes++; timer = 0}   
   if(minutes === 0){
-    ctx.fillText(seconds,canvas.width/2, 50);
-    ctx.strokeText(seconds,canvas.width/2, 50);
+    ctx.fillText(seconds,canvas.width/2-50, 50);
+    ctx.strokeText(seconds,canvas.width/2-50, 50);
   }else if(minutes > 0){
-    ctx.fillText(minutes+':'+seconds,canvas.width/2, 50);    
+    ctx.fillText(minutes+':'+seconds,canvas.width/2-50, 50);    
   } 
 }
 
