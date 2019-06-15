@@ -42,24 +42,19 @@ class Bullet{
   shutgunShot(){    
     player.damage = 2;
     let imageIndex = this.currentDirection + 8;    
-    ctx.drawImage(images[imageIndex],this.x,this.y);   
-    // shotgunSound.play(); 
+    ctx.drawImage(images[imageIndex],this.x,this.y);     
   }
   
   pistolShot(){
     player.damage = 1;
     let imageIndex = 17;
-    ctx.drawImage(images[imageIndex],this.x,this.y);
-    // pistolSound.load();   
-    // pistolSound.play();
-
+    ctx.drawImage(images[imageIndex],this.x,this.y);    
   }
 
   rocketShot(){
     player.damage = 3;    
     let imageIndex = this.currentDirection + 34;    
-    ctx.drawImage(images[imageIndex],this.x,this.y);
-    // rocketSound.play();
+    ctx.drawImage(images[imageIndex],this.x,this.y);    
   }
 
   enemyShots(){     

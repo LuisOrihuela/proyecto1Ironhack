@@ -59,8 +59,7 @@ class Enemy{
     const FACING_DOWN = 4;
     const FACING_UP = 5;
     const FACING_LEFT = 6;
-    const FACING_RIGHT = 7;  
-    //console.log(angleDeg);
+    const FACING_RIGHT = 7;      
     if(angleDeg > -60 && angleDeg < 60){
       this.currentDirection = FACING_RIGHT;      
     }
@@ -136,7 +135,7 @@ class Enemy{
     let currentHealth = this.livesLeft/this.lives;
     ctx.strokeStyle='black'; 
     ctx.strokeRect(x, y, this.lives * 6,5);    
-    if(currentHealth <= 1 && currentHealth > 0.7) color = 'blue';
+    if(currentHealth <= 1 && currentHealth > 0.7) color = 'green';
     if(currentHealth <= 0.7 && currentHealth > 0.3 ) color = 'yellow';
     if(currentHealth <= 0.3) color = 'red';
     ctx.fillStyle = color;

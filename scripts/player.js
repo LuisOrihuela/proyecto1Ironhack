@@ -125,10 +125,7 @@ class Player{
       this.ammo = 0;
     }else{
       this.ammo--;
-    }        
-    
-    
-    console.log(this.ammo);
+    }            
   }
 
   drawBullets(){
@@ -170,7 +167,7 @@ class Player{
     let y = this.y -10;   
     ctx.strokeStyle='black'; 
     ctx.strokeRect(x, y,30,5);
-    if(this.livesLeft >=8) ctx.fillStyle = 'blue';
+    if(this.livesLeft >=8) ctx.fillStyle = 'green';
     else if(this.livesLeft < 8 && this.livesLeft > 3) ctx.fillStyle = 'yellow';
     else if(this.livesLeft <= 3) ctx.fillStyle = 'red';
     ctx.fillRect(x,y,this.livesLeft * 3,5);

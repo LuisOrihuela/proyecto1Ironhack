@@ -2,3 +2,44 @@ canvas{
   display: block;
   cursor: url(/cursors/6crosshair2.cur), default;
 }
+
+#gamecover{
+  background: black;
+  height: 580px;
+  width: 800px;
+  z-index: 1;  
+}
+
+.hide{
+  display: none;
+}
+
+#slime{
+  position: absolute;
+  height: 350px;
+  top: 100px;
+  left: 220px; 
+  z-index: 2;
+}
+
+#target{
+  height: 300px;
+  position: absolute;
+  top: 100px;
+  left: 220px;
+  z-index: 2;
+}
+
+.init{
+  position: absolute;
+  left: 350px;
+  top: 500px;  
+}
+
+.init_button{
+  text-decoration: none;
+  color:white;
+}
+   
+
+

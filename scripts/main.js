@@ -1,5 +1,6 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+let gameCover = document.getElementById('gamecover');
 let aimX;
 let aimY;
 let player = new Player(50, 50);
@@ -132,6 +133,7 @@ function generateEnemy(){
 
 function generateUpgrade(){
   let time = Math.floor(timer/60); 
+  let min 
   if(time === 30 && firstAid == undefined && player.livesLeft < 10){
     firstAid = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);    
   }
@@ -141,10 +143,10 @@ function generateUpgrade(){
   if(time === 45 && shotgun == undefined ){
     shotgun = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  if(time === 5 && rocketLauncher == undefined){
+  if(time === 55 && rocketLauncher == undefined){
     rocketLauncher = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);       
   }
-  if(time === 5 && crystal == undefined){
+  if(time === 55 && crystal == undefined){
     crystal = new Upgrade(generateRandomCoordinates().xCoordinate, generateRandomCoordinates().yCoordinate);
   }  
 }
@@ -245,8 +247,8 @@ function drawAmmo(){
     height = 10;
     multiplier = 1;
   } 
-  ctx. fillStyle = 'black';
-  ctx.font = '10px Verdana'; 
+  ctx.fillStyle = 'white';
+  ctx.font = '13px Verdana'; 
   if(weapon === 'tomatoe'){
     ctx.drawImage(image,
       0, 0, width, height,
@@ -263,7 +265,7 @@ function drawAmmo(){
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); 
-  ctx.fillStyle = 'green';
+  ctx.fillStyle = 'black';
   ctx.fillRect(0,0,canvas.width,canvas.height); 
   player.drawPlayer(aimX,aimY,keypressed); 
   backmusic.play();
@@ -277,9 +279,16 @@ function draw() {
   //Stops animation when the player is out of livess
   if(player.livesLeft <= 0){
     cancelAnimationFrame(animate);
+    location.reload();    
   }
   
 }
 
-draw();
+function init(){
+  player.livesLeft = 10;
+  window.onload = draw();    
+  gameCover.setAttribute('class','hide')
+}
+
+
 
